@@ -11,10 +11,10 @@ import java.util.Optional;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
-    @Query("select r from Restaurant r where r.appUser.username = :username")
+    @Query("select r from Restaurant r where r.user.username = :username")
     List<Restaurant> findAllByUsername(String username);
 
-    @Query("select r from Restaurant r where r.id = :id and r.appUser.username = :username")
+    @Query("select r from Restaurant r where r.id = :id and r.user.username = :username")
     Optional<Restaurant> findByIdAndUsername(Long id, String username);
-    
+
 }

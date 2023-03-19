@@ -4,9 +4,11 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +16,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class AppUser extends BaseEntity implements UserDetails {
+@Table(name = "users")
+public class CustomUserDetails extends BaseEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,15 +37,16 @@ public class AppUser extends BaseEntity implements UserDetails {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "userRoleId")
-    private UserRole userRole;
+    @JoinColumn(name = "roleId")
+    private Role role;
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Restaurant> restaurants = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Set<GrantedAuthority> authorities = new HashSet<>(Arrays.asList(new SimpleGrantedAuthority(role.getName())));
+        return authorities;
     }
 
     @Override

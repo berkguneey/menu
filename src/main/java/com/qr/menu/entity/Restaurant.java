@@ -64,7 +64,7 @@ public class Restaurant extends BaseEntity {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "appUserId")
-    private AppUser appUser;
+    @JoinColumn(name = "userId")
+    private CustomUserDetails user;
 
 }

@@ -18,7 +18,7 @@ public interface RestaurantMapper {
 
     Restaurant toRestaurant(RestaurantDto restaurantDto);
 
-    @Mapping(source = "appUserId", target = "appUser.id")
+    @Mapping(source = "userId", target = "user.id")
     Restaurant toRestaurant(AddRestaurantRequest addRestaurantRequest);
 
 }

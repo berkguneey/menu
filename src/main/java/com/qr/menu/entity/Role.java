@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class UserRole extends BaseEntity {
+public class Role extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class UserRole extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "userRole", cascade = CascadeType.ALL)
-    private Set<AppUser> appUsers = new HashSet<>();
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    private Set<CustomUserDetails> customUserDetails = new HashSet<>();
 
 }
