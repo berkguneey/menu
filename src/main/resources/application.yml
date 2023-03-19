@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+app:
+  jwtSecret: berk
+  jwtExpirationInMs: 5000000
+
+logging:
+  level:
+    root: INFO
+
+spring:
+  application:
+    name: menu-application
+  datasource:
+    url: jdbc:postgresql://localhost:5432/qr-menu-app
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+  sql:
+    init:
+      mode: always
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
