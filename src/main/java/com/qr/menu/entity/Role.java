@@ -1,5 +1,6 @@
 package com.qr.menu.entity;
 
+import com.qr.menu.entity.common.BaseEntity;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;

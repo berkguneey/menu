@@ -1,4 +1,4 @@
-package com.qr.menu.entity;
+package com.qr.menu.entity.common;
 
 import lombok.Data;
 

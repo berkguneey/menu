@@ -1,10 +1,12 @@
 package com.qr.menu.service.impl;
 
+import com.qr.menu.constant.ErrorConstants;
 import com.qr.menu.dto.ProductDto;
 import com.qr.menu.dto.request.AddProductRequest;
 import com.qr.menu.entity.MenuProduct;
 import com.qr.menu.entity.Product;
 import com.qr.menu.entity.Restaurant;
+import com.qr.menu.exception.BusinessException;
 import com.qr.menu.mapper.ProductMapper;
 import com.qr.menu.repository.MenuProductRepository;
 import com.qr.menu.repository.ProductRepository;
@@ -13,7 +15,6 @@ import com.qr.menu.service.IMenuService;
 import com.qr.menu.service.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,20 +29,19 @@ public class ProductServiceImpl implements IProductService {
     private final IMenuService menuService;
     private final MenuProductRepository menuProductRepository;
 
-    private Product findOneById(Long id) {
+    private Product getOne(Long id) {
         Optional<Product> productOpt = productRepository.findById(id);
         if (!productOpt.isPresent()) {
-            throw new RuntimeException("Not Found!");
+            throw new BusinessException(ErrorConstants.ERR107);
         }
         return productOpt.get();
     }
 
     @Override
     public ProductDto addProduct(Restaurant restaurant, Long menuId, AddProductRequest request) {
-        List<Product> products = productRepository.findByNameAndRestaurantIdAndMenuId(request.getName(), restaurant.getId(), menuId);
-
-        if (!CollectionUtils.isEmpty(products)) {
-            throw new RuntimeException("Already Found!");
+        Optional<Product> productOpt = productRepository.findByNameAndRestaurantIdAndMenuId(request.getName(), restaurant.getId(), menuId);
+        if (productOpt.isPresent()) {
+            throw new BusinessException(ErrorConstants.ERR108);
         }
         Product product = mapper.toProduct(request);
         product.setCategory(categoryService.getOne(request.getCategoryId()));
@@ -61,14 +61,14 @@ public class ProductServiceImpl implements IProductService {
     public List<ProductDto> findAll() {
         List<Product> products = productRepository.findAll();
         if (products.isEmpty()) {
-            throw new RuntimeException("Not Found!");
+            throw new BusinessException(ErrorConstants.ERR107);
         }
         return mapper.toProductDtos(products);
     }
 
     @Override
     public ProductDto findById(Long id) {
-        Product product = findOneById(id);
+        Product product = getOne(id);
         return mapper.toProductDto(product);
     }
 

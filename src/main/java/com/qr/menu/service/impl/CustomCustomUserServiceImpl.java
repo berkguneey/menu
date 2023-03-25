@@ -1,5 +1,6 @@
 package com.qr.menu.service.impl;
 
+import com.qr.menu.constant.ErrorConstants;
 import com.qr.menu.dto.request.RegisterRequest;
 import com.qr.menu.entity.CustomUserDetails;
 import com.qr.menu.repository.CustomUserRepository;
@@ -19,7 +20,7 @@ public class CustomCustomUserServiceImpl implements ICustomUserService, UserDeta
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        CustomUserDetails user = repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        CustomUserDetails user = repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(ErrorConstants.ERR103.getMessage()));
         return User.withUsername(user.getUsername()).password(user.getPassword()).roles(user.getRole().getName()).build();
     }
 

@@ -1,8 +1,10 @@
 package com.qr.menu.service.impl;
 
+import com.qr.menu.constant.ErrorConstants;
 import com.qr.menu.dto.CategoryDto;
 import com.qr.menu.dto.request.AddCategoryRequest;
 import com.qr.menu.entity.Category;
+import com.qr.menu.exception.BusinessException;
 import com.qr.menu.mapper.CategoryMapper;
 import com.qr.menu.repository.CategoryRepository;
 import com.qr.menu.service.ICategoryService;
@@ -23,16 +25,16 @@ public class CategoryServiceImpl implements ICategoryService {
     public Category getOne(Long id) {
         Optional<Category> categoryOpt = repository.findById(id);
         if (!categoryOpt.isPresent()) {
-            throw new RuntimeException("Not Found!");
+            throw new BusinessException(ErrorConstants.ERR101);
         }
         return categoryOpt.get();
     }
 
     @Override
     public CategoryDto addCategory(AddCategoryRequest request) {
-        List<Category> categories = repository.findByName(request.getName());
-        if (!categories.isEmpty()) {
-            throw new RuntimeException("Already Found!");
+        Optional<Category> categoryOpt = repository.findByName(request.getName());
+        if (categoryOpt.isPresent()) {
+            throw new BusinessException(ErrorConstants.ERR102);
         }
         Category category = mapper.toCategory(request);
         return mapper.toCategoryDto(repository.save(category));
@@ -42,7 +44,7 @@ public class CategoryServiceImpl implements ICategoryService {
     public List<CategoryDto> findAll() {
         List<Category> categories = repository.findAll();
         if (categories.isEmpty()) {
-            throw new RuntimeException("Not Found!");
+            throw new BusinessException(ErrorConstants.ERR101);
         }
         return mapper.toCategoryDtos(categories);
     }

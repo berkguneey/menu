@@ -17,4 +17,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     @Query("select r from Restaurant r where r.id = :id and r.user.username = :username")
     Optional<Restaurant> findByIdAndUsername(Long id, String username);
 
+    Optional<Restaurant> findByNameAndEmailAndPhoneNumber(String name, String email, String phoneNumber);
+
 }

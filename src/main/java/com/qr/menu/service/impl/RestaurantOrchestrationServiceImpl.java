@@ -1,6 +1,7 @@
 package com.qr.menu.service.impl;
 
 import com.google.zxing.WriterException;
+import com.qr.menu.constant.ErrorConstants;
 import com.qr.menu.dto.MenuDto;
 import com.qr.menu.dto.MenuProductDto;
 import com.qr.menu.dto.ProductDto;
@@ -9,6 +10,7 @@ import com.qr.menu.dto.request.AddMenuRequest;
 import com.qr.menu.dto.request.AddProductRequest;
 import com.qr.menu.dto.request.AddRestaurantRequest;
 import com.qr.menu.entity.Restaurant;
+import com.qr.menu.exception.BusinessException;
 import com.qr.menu.helper.QRCodeGeneratorHelper;
 import com.qr.menu.mapper.RestaurantMapper;
 import com.qr.menu.repository.RestaurantRepository;
@@ -39,7 +41,15 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<Restaurant> restaurantOpt = repository.findByIdAndUsername(id, auth.getName());
         if (!restaurantOpt.isPresent()) {
-            throw new RuntimeException("Not Found!");
+            throw new BusinessException(ErrorConstants.ERR109);
+        }
+        return restaurantOpt.get();
+    }
+
+    private Restaurant getOne(Long id) {
+        Optional<Restaurant> restaurantOpt = repository.findById(id);
+        if (!restaurantOpt.isPresent()) {
+            throw new BusinessException(ErrorConstants.ERR109);
         }
         return restaurantOpt.get();
     }
@@ -47,17 +57,16 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     @Override
     public List<MenuProductDto> findActiveMenuProductsByRestaurantId(Long restaurantId) {
         // TODO Kategori bazlı ayırmak gerek.
-        Optional<Restaurant> restaurantOpt = repository.findById(restaurantId);
-        if (!restaurantOpt.isPresent()) {
-            throw new RuntimeException("Not Found!");
-        }
-        return menuService.findActiveMenuByRestaurant(restaurantOpt.get());
+        return menuService.findActiveMenuByRestaurant(getOne(restaurantId));
     }
 
     @Override
     @Transactional
     public RestaurantDto addRestaurant(AddRestaurantRequest request) throws IOException, WriterException {
-        // TODO found olma kontrolü eklenecek.
+        Optional<Restaurant> restaurantOpt = repository.findByNameAndEmailAndPhoneNumber(request.getName(), request.getEmail(), request.getPhoneNumber());
+        if (restaurantOpt.isPresent()) {
+            throw new BusinessException(ErrorConstants.ERR110);
+        }
         Restaurant restaurant = mapper.toRestaurant(request);
         restaurant = repository.save(restaurant);
         String url = "http://localhost:8081/restaurants/" + restaurant.getId() + "/active-menu/products";
@@ -70,7 +79,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     public List<RestaurantDto> findAllRestaurants() {
         List<Restaurant> restaurants = repository.findAll();
         if (restaurants.isEmpty()) {
-            throw new RuntimeException("Not Found!");
+            throw new BusinessException(ErrorConstants.ERR109);
         }
         return mapper.toRestaurantDtos(restaurants);
     }
@@ -79,6 +88,9 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     public List<RestaurantDto> findRestaurants() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<Restaurant> restaurants = repository.findAllByUsername(auth.getName());
+        if (restaurants.isEmpty()) {
+            throw new BusinessException(ErrorConstants.ERR109);
+        }
         return mapper.toRestaurantDtos(restaurants);
     }
 
