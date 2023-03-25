@@ -20,7 +20,7 @@ public interface IMenuService {
 
     List<MenuDto> findAllByRestaurant(Restaurant restaurant);
 
-    List<MenuProductDto> findProductsAndPricesByRestaurantAndMenuId(Restaurant restaurant, Long menuId);
+    List<MenuProductDto> findProductsAndPricesByMenuId(Restaurant restaurant, Long menuId);
 
     List<MenuProductDto> findActiveMenuByRestaurant(Restaurant restaurant);
 

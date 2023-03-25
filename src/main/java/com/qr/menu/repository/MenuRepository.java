@@ -20,4 +20,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     @Query("select count(m) from Menu m where m.restaurant.id = :restaurantId")
     long countMenusByRestaurantId(Long restaurantId);
 
+    @Query("select m from Menu m where m.id = :id and m.restaurant.id = :restaurantId")
+    Optional<Menu> findByIdAndRestaurantId(Long id, Long restaurantId);
+
 }

@@ -1,13 +1,13 @@
 package com.qr.menu.dto;
 
-import com.qr.menu.dto.response.common.BaseResponse;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class CategoryDto {
-    private BaseResponse baseResponse = new BaseResponse();
     private Long id;
     private String name;
     private String imagePath;

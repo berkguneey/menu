@@ -2,10 +2,7 @@ package com.qr.menu.service.impl;
 
 import com.google.zxing.WriterException;
 import com.qr.menu.constant.ErrorConstants;
-import com.qr.menu.dto.MenuDto;
-import com.qr.menu.dto.MenuProductDto;
-import com.qr.menu.dto.ProductDto;
-import com.qr.menu.dto.RestaurantDto;
+import com.qr.menu.dto.*;
 import com.qr.menu.dto.request.AddMenuRequest;
 import com.qr.menu.dto.request.AddProductRequest;
 import com.qr.menu.dto.request.AddRestaurantRequest;
@@ -26,6 +23,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,9 +53,23 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     }
 
     @Override
-    public List<MenuProductDto> findActiveMenuProductsByRestaurantId(Long restaurantId) {
-        // TODO Kategori bazlı ayırmak gerek.
-        return menuService.findActiveMenuByRestaurant(getOne(restaurantId));
+    public List<MenuProductCategoryBasedDto> findActiveMenuProductsByRestaurantId(Long restaurantId) {
+        List<MenuProductDto> menuProducts = menuService.findActiveMenuByRestaurant(getOne(restaurantId));
+
+        List<MenuProductCategoryBasedDto> menuProductCategoryBasedList = menuProducts.stream()
+                .collect(Collectors.groupingBy(
+                        mp -> mp.getProduct().getCategory(),
+                        Collectors.mapping(mp -> mp, Collectors.toList())))
+                .entrySet().stream()
+                .map(entry -> {
+                    MenuProductCategoryBasedDto menuProductCategoryBased = new MenuProductCategoryBasedDto();
+                    menuProductCategoryBased.setCategory(entry.getKey());
+                    menuProductCategoryBased.setMenuProducts(entry.getValue());
+                    return menuProductCategoryBased;
+                })
+                .collect(Collectors.toList());
+
+        return menuProductCategoryBasedList;
     }
 
     @Override
@@ -115,7 +127,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     @Override
     public List<MenuProductDto> findMenuProductsByRestaurantIdAndMenuId(Long restaurantId, Long menuId) {
         Restaurant restaurant = getOneByAuth(restaurantId);
-        return menuService.findProductsAndPricesByRestaurantAndMenuId(restaurant, menuId);
+        return menuService.findProductsAndPricesByMenuId(restaurant, menuId);
     }
 
     @Override

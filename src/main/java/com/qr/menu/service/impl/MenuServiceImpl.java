@@ -72,14 +72,18 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     @Override
-    public List<MenuProductDto> findProductsAndPricesByRestaurantAndMenuId(Restaurant restaurant, Long menuId) {
+    public List<MenuProductDto> findProductsAndPricesByMenuId(Restaurant restaurant, Long menuId) {
+        Optional<Menu> menuOpt = menuRepository.findByIdAndRestaurantId(menuId, restaurant.getId());
+        if (!menuOpt.isPresent()) {
+            throw new BusinessException(ErrorConstants.ERR111);
+        }
         return menuProductMapper.toMenuProductDtos(menuProductRepository.findByMenuId(menuId));
     }
 
     @Override
     public List<MenuProductDto> findActiveMenuByRestaurant(Restaurant restaurant) {
         Menu activeMenu = menuRepository.findByRestaurantIdAndIsActive(restaurant.getId(), true).get();
-        return findProductsAndPricesByRestaurantAndMenuId(restaurant, activeMenu.getId());
+        return findProductsAndPricesByMenuId(restaurant, activeMenu.getId());
     }
 
 }
