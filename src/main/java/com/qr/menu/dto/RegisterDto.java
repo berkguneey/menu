@@ -1,11 +1,11 @@
-package com.qr.menu.dto.request;
+package com.qr.menu.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RegisterRequest {
+public class RegisterDto {
     private String username;
     private String password;
 }

@@ -1,7 +1,7 @@
 package com.qr.menu.mapper;
 
+import com.qr.menu.dto.AddMenuDto;
 import com.qr.menu.dto.MenuDto;
-import com.qr.menu.dto.request.AddMenuRequest;
 import com.qr.menu.entity.Menu;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
@@ -17,6 +17,6 @@ public interface MenuMapper {
 
     Menu toMenu(MenuDto menuDto);
 
-    Menu toMenu(AddMenuRequest addMenuRequest);
+    Menu toMenu(AddMenuDto addMenuDto);
 
 }

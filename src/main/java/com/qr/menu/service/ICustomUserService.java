@@ -1,9 +1,9 @@
 package com.qr.menu.service;
 
-import com.qr.menu.dto.request.RegisterRequest;
+import com.qr.menu.dto.RegisterDto;
 
 public interface ICustomUserService {
 
-    RegisterRequest register(RegisterRequest request);
+    RegisterDto register(RegisterDto request);
 
 }

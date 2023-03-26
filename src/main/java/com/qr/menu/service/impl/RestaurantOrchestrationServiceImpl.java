@@ -3,9 +3,6 @@ package com.qr.menu.service.impl;
 import com.google.zxing.WriterException;
 import com.qr.menu.constant.ErrorConstants;
 import com.qr.menu.dto.*;
-import com.qr.menu.dto.request.AddMenuRequest;
-import com.qr.menu.dto.request.AddProductRequest;
-import com.qr.menu.dto.request.AddRestaurantRequest;
 import com.qr.menu.entity.Restaurant;
 import com.qr.menu.exception.BusinessException;
 import com.qr.menu.helper.QRCodeGeneratorHelper;
@@ -74,7 +71,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
 
     @Override
     @Transactional
-    public RestaurantDto addRestaurant(AddRestaurantRequest request) throws IOException, WriterException {
+    public RestaurantDto addRestaurant(AddRestaurantDto request) throws IOException, WriterException {
         Optional<Restaurant> restaurantOpt = repository.findByNameAndEmailAndPhoneNumber(request.getName(), request.getEmail(), request.getPhoneNumber());
         if (restaurantOpt.isPresent()) {
             throw new BusinessException(ErrorConstants.ERR110);
@@ -119,7 +116,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     }
 
     @Override
-    public MenuDto addMenuToRestaurant(Long restaurantId, AddMenuRequest request) {
+    public MenuDto addMenuToRestaurant(Long restaurantId, AddMenuDto request) {
         Restaurant restaurant = getOneByAuth(restaurantId);
         return menuService.addMenu(restaurant, request);
     }
@@ -131,7 +128,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     }
 
     @Override
-    public ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductRequest request) {
+    public ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductDto request) {
         Restaurant restaurant = getOneByAuth(restaurantId);
         return productService.addProduct(restaurant, menuId, request);
     }

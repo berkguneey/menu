@@ -1,11 +1,11 @@
-package com.qr.menu.dto.request;
+package com.qr.menu.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class AddCategoryRequest {
+public class AddCategoryDto {
     private String name;
     private String imagePath;
 }

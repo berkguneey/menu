@@ -1,9 +1,9 @@
 package com.qr.menu.service.impl;
 
 import com.qr.menu.constant.ErrorConstants;
+import com.qr.menu.dto.AddMenuDto;
 import com.qr.menu.dto.MenuDto;
 import com.qr.menu.dto.MenuProductDto;
-import com.qr.menu.dto.request.AddMenuRequest;
 import com.qr.menu.entity.Menu;
 import com.qr.menu.entity.Restaurant;
 import com.qr.menu.exception.BusinessException;
@@ -37,7 +37,7 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     @Override
-    public MenuDto addMenu(Restaurant restaurant, AddMenuRequest request) {
+    public MenuDto addMenu(Restaurant restaurant, AddMenuDto request) {
         long menuCount = menuRepository.countMenusByRestaurantId(restaurant.getId());
         if (menuCount == 3) {
             throw new BusinessException(ErrorConstants.ERR106);
@@ -82,8 +82,11 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public List<MenuProductDto> findActiveMenuByRestaurant(Restaurant restaurant) {
-        Menu activeMenu = menuRepository.findByRestaurantIdAndIsActive(restaurant.getId(), true).get();
-        return findProductsAndPricesByMenuId(restaurant, activeMenu.getId());
+        Optional<Menu> activeMenuOpt = menuRepository.findByRestaurantIdAndIsActive(restaurant.getId(), true);
+        if (!activeMenuOpt.isPresent()) {
+            throw new BusinessException(ErrorConstants.ERR112);
+        }
+        return findProductsAndPricesByMenuId(restaurant, activeMenuOpt.get().getId());
     }
 
 }

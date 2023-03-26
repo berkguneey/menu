@@ -1,6 +1,6 @@
 package com.qr.menu.exception;
 
-import com.qr.menu.dto.response.common.BaseResponse;
+import com.qr.menu.dto.ExceptionResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +17,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
         long depth = 5L;
-        BaseResponse baseResponse = new BaseResponse(ex);
+        ExceptionResponseDto exceptionResponse = new ExceptionResponseDto(ex, HttpStatus.INTERNAL_SERVER_ERROR);
         log.error("Exception Stacktrace: {}", Arrays.stream(ex.getStackTrace()).limit(depth).map(String::valueOf).collect(Collectors.joining(System.lineSeparator())));
-        return new ResponseEntity<>(baseResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exceptionResponse, exceptionResponse.getHttpStatus());
     }
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleBusinessException(BusinessException ex) {
         long depth = 5L;
-        BaseResponse baseResponse = new BaseResponse(ex);
+        ExceptionResponseDto exceptionResponse = new ExceptionResponseDto(ex);
         log.error("Exception Stacktrace: {}", Arrays.stream(ex.getStackTrace()).limit(depth).map(String::valueOf).collect(Collectors.joining(System.lineSeparator())));
-        return new ResponseEntity<>(baseResponse, ex.getHttpStatus());
+        return new ResponseEntity<>(exceptionResponse, exceptionResponse.getHttpStatus());
     }
 
 }

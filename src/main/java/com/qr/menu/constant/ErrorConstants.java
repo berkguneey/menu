@@ -15,7 +15,8 @@ public enum ErrorConstants {
     ERR108(108L, "Bu ürün zaten tanımlı."),
     ERR109(109L, "Restoran bulunamadı."),
     ERR110(110L, "Bu restoran zaten tanımlı."),
-    ERR111(111L, "Bu menü bu restorana ait değil.");
+    ERR111(111L, "Menü bu restorana ait değil."),
+    ERR112(112L, "Restoranın aktif menüsü bulunamadı.");
 
     private Long code;
     private String message;

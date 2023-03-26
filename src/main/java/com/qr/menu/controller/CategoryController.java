@@ -1,13 +1,13 @@
 package com.qr.menu.controller;
 
-import com.qr.menu.dto.request.AddCategoryRequest;
-import com.qr.menu.dto.response.CategoryResponse;
+import com.qr.menu.dto.AddCategoryDto;
+import com.qr.menu.dto.CategoryDto;
 import com.qr.menu.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,24 +17,18 @@ public class CategoryController {
     private final ICategoryService service;
 
     @PostMapping("/owner/categories")
-    public ResponseEntity<CategoryResponse> addCategory(@RequestBody AddCategoryRequest request) {
-        CategoryResponse response = new CategoryResponse();
-        response.setCategories(Collections.singletonList(service.addCategory(request)));
-        return ResponseEntity.ok(response);
+    public ResponseEntity<CategoryDto> addCategory(@RequestBody AddCategoryDto request) {
+        return ResponseEntity.ok(service.addCategory(request));
     }
 
     @GetMapping("/owner/categories")
-    public ResponseEntity<CategoryResponse> findAllCategories() {
-        CategoryResponse response = new CategoryResponse();
-        response.setCategories(service.findAll());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<List<CategoryDto>> findAllCategories() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/owner/categories/{id}")
-    public ResponseEntity<CategoryResponse> findCategoryById(@PathVariable Long id) {
-        CategoryResponse response = new CategoryResponse();
-        response.setCategories(Collections.singletonList(service.findById(id)));
-        return ResponseEntity.ok(response);
+    public ResponseEntity<CategoryDto> findCategoryById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
 }

@@ -1,8 +1,8 @@
 package com.qr.menu.service.impl;
 
 import com.qr.menu.constant.ErrorConstants;
+import com.qr.menu.dto.AddCategoryDto;
 import com.qr.menu.dto.CategoryDto;
-import com.qr.menu.dto.request.AddCategoryRequest;
 import com.qr.menu.entity.Category;
 import com.qr.menu.exception.BusinessException;
 import com.qr.menu.mapper.CategoryMapper;
@@ -31,7 +31,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public CategoryDto addCategory(AddCategoryRequest request) {
+    public CategoryDto addCategory(AddCategoryDto request) {
         Optional<Category> categoryOpt = repository.findByName(request.getName());
         if (categoryOpt.isPresent()) {
             throw new BusinessException(ErrorConstants.ERR102);

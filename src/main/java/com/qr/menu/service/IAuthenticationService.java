@@ -1,10 +1,9 @@
 package com.qr.menu.service;
 
-import com.qr.menu.dto.request.LoginRequest;
-import com.qr.menu.dto.response.LoginResponse;
+import com.qr.menu.dto.LoginDto;
 
 public interface IAuthenticationService {
 
-    LoginResponse login(LoginRequest request);
+    LoginDto login(LoginDto request);
 
 }

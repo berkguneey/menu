@@ -1,7 +1,6 @@
 package com.qr.menu.controller;
 
-import com.qr.menu.dto.request.LoginRequest;
-import com.qr.menu.dto.response.LoginResponse;
+import com.qr.menu.dto.LoginDto;
 import com.qr.menu.service.IAuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,7 @@ public class AuthenticationController {
     private final IAuthenticationService service;
 
     @PostMapping("/authentication/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginDto> login(@RequestBody LoginDto request) {
         return ResponseEntity.ok(service.login(request));
     }
 

@@ -1,7 +1,6 @@
 package com.qr.menu.service.impl;
 
-import com.qr.menu.dto.request.LoginRequest;
-import com.qr.menu.dto.response.LoginResponse;
+import com.qr.menu.dto.LoginDto;
 import com.qr.menu.helper.JwtTokenProvider;
 import com.qr.menu.service.IAuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +18,13 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     private final JwtTokenProvider tokenProvider;
 
     @Override
-    public LoginResponse login(LoginRequest request) {
+    public LoginDto login(LoginDto request) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
-        LoginResponse response = new LoginResponse();
-        response.setUsername(request.getUsername());
-        response.setJwtToken(jwt);
-        return response;
+        request.setUsername(request.getUsername());
+        request.setJwtToken(jwt);
+        return request;
     }
 
 }
