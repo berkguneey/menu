@@ -29,11 +29,7 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public Menu getOne(Long id) {
-        Optional<Menu> menuOpt = menuRepository.findById(id);
-        if (!menuOpt.isPresent()) {
-            throw new BusinessException(ErrorConstants.ERR104);
-        }
-        return menuOpt.get();
+        return menuRepository.findById(id).orElseThrow(() -> new BusinessException(ErrorConstants.ERR104));
     }
 
     @Override
@@ -46,9 +42,9 @@ public class MenuServiceImpl implements IMenuService {
         if (menuOpt.isPresent()) {
             throw new BusinessException(ErrorConstants.ERR105);
         }
-        Menu menu = menuMapper.toMenu(request);
-        menu.setRestaurant(restaurant);
-        return menuMapper.toMenuDto(menuRepository.save(menu));
+        Menu newMenu = menuMapper.toMenu(request);
+        newMenu.setRestaurant(restaurant);
+        return menuMapper.toMenuDto(menuRepository.save(newMenu));
     }
 
     @Override
@@ -62,8 +58,7 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public MenuDto findById(Long id) {
-        Menu menu = getOne(id);
-        return menuMapper.toMenuDto(menu);
+        return menuMapper.toMenuDto(getOne(id));
     }
 
     @Override
@@ -73,20 +68,14 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public List<MenuProductDto> findProductsAndPricesByMenuId(Restaurant restaurant, Long menuId) {
-        Optional<Menu> menuOpt = menuRepository.findByIdAndRestaurantId(menuId, restaurant.getId());
-        if (!menuOpt.isPresent()) {
-            throw new BusinessException(ErrorConstants.ERR111);
-        }
-        return menuProductMapper.toMenuProductDtos(menuProductRepository.findByMenuId(menuId));
+        Menu menu = menuRepository.findByIdAndRestaurantId(menuId, restaurant.getId()).orElseThrow(() -> new BusinessException(ErrorConstants.ERR111));
+        return menuProductMapper.toMenuProductDtos(menuProductRepository.findByMenuId(menu.getId()));
     }
 
     @Override
     public List<MenuProductDto> findActiveMenuByRestaurant(Restaurant restaurant) {
-        Optional<Menu> activeMenuOpt = menuRepository.findByRestaurantIdAndIsActive(restaurant.getId(), true);
-        if (!activeMenuOpt.isPresent()) {
-            throw new BusinessException(ErrorConstants.ERR112);
-        }
-        return findProductsAndPricesByMenuId(restaurant, activeMenuOpt.get().getId());
+        Menu activeMenu = menuRepository.findByRestaurantIdAndIsActive(restaurant.getId(), true).orElseThrow(() -> new BusinessException(ErrorConstants.ERR112));
+        return findProductsAndPricesByMenuId(restaurant, activeMenu.getId());
     }
 
 }

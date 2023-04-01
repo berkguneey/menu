@@ -30,11 +30,7 @@ public class ProductServiceImpl implements IProductService {
     private final MenuProductRepository menuProductRepository;
 
     private Product getOne(Long id) {
-        Optional<Product> productOpt = productRepository.findById(id);
-        if (!productOpt.isPresent()) {
-            throw new BusinessException(ErrorConstants.ERR107);
-        }
-        return productOpt.get();
+        return productRepository.findById(id).orElseThrow(() -> new BusinessException(ErrorConstants.ERR107));
     }
 
     @Override
@@ -43,18 +39,18 @@ public class ProductServiceImpl implements IProductService {
         if (productOpt.isPresent()) {
             throw new BusinessException(ErrorConstants.ERR108);
         }
-        Product product = mapper.toProduct(request);
-        product.setCategory(categoryService.getOne(request.getCategoryId()));
-        product.setRestaurant(restaurant);
-        product = productRepository.save(product);
+        Product newProduct = mapper.toProduct(request);
+        newProduct.setCategory(categoryService.getOne(request.getCategoryId()));
+        newProduct.setRestaurant(restaurant);
+        newProduct = productRepository.save(newProduct);
 
         MenuProduct menuProduct = new MenuProduct();
         menuProduct.setMenu(menuService.getOne(menuId));
-        menuProduct.setProduct(product);
+        menuProduct.setProduct(newProduct);
         menuProduct.setPrice(request.getPrice());
         menuProductRepository.save(menuProduct);
 
-        return mapper.toProductDto(product);
+        return mapper.toProductDto(newProduct);
     }
 
     @Override
@@ -68,8 +64,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ProductDto findById(Long id) {
-        Product product = getOne(id);
-        return mapper.toProductDto(product);
+        return mapper.toProductDto(getOne(id));
     }
 
 }

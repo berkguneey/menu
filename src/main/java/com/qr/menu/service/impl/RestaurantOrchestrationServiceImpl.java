@@ -34,26 +34,19 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
 
     private Restaurant getOneByAuth(Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<Restaurant> restaurantOpt = repository.findByIdAndUsername(id, auth.getName());
-        if (!restaurantOpt.isPresent()) {
-            throw new BusinessException(ErrorConstants.ERR109);
-        }
-        return restaurantOpt.get();
+        String username = auth.getName();
+        return repository.findByIdAndUsername(id, username).orElseThrow(() -> new BusinessException(ErrorConstants.ERR109));
     }
 
     private Restaurant getOne(Long id) {
-        Optional<Restaurant> restaurantOpt = repository.findById(id);
-        if (!restaurantOpt.isPresent()) {
-            throw new BusinessException(ErrorConstants.ERR109);
-        }
-        return restaurantOpt.get();
+        return repository.findById(id).orElseThrow(() -> new BusinessException(ErrorConstants.ERR109));
     }
 
     @Override
     public List<MenuProductCategoryBasedDto> findActiveMenuProductsByRestaurantId(Long restaurantId) {
         List<MenuProductDto> menuProducts = menuService.findActiveMenuByRestaurant(getOne(restaurantId));
 
-        List<MenuProductCategoryBasedDto> menuProductCategoryBasedList = menuProducts.stream()
+        return menuProducts.stream()
                 .collect(Collectors.groupingBy(
                         mp -> mp.getProduct().getCategory(),
                         Collectors.mapping(mp -> mp, Collectors.toList())))
@@ -65,8 +58,6 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
                     return menuProductCategoryBased;
                 })
                 .collect(Collectors.toList());
-
-        return menuProductCategoryBasedList;
     }
 
     @Override
@@ -105,32 +96,27 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
 
     @Override
     public RestaurantDto findRestaurantByRestaurantId(Long restaurantId) {
-        Restaurant restaurant = getOneByAuth(restaurantId);
-        return mapper.toRestaurantDto(restaurant);
+        return mapper.toRestaurantDto(getOneByAuth(restaurantId));
     }
 
     @Override
     public List<MenuDto> findMenusByRestaurantId(Long restaurantId) {
-        Restaurant restaurant = getOneByAuth(restaurantId);
-        return menuService.findAllByRestaurant(restaurant);
+        return menuService.findAllByRestaurant(getOneByAuth(restaurantId));
     }
 
     @Override
     public MenuDto addMenuToRestaurant(Long restaurantId, AddMenuDto request) {
-        Restaurant restaurant = getOneByAuth(restaurantId);
-        return menuService.addMenu(restaurant, request);
+        return menuService.addMenu(getOneByAuth(restaurantId), request);
     }
 
     @Override
     public List<MenuProductDto> findMenuProductsByRestaurantIdAndMenuId(Long restaurantId, Long menuId) {
-        Restaurant restaurant = getOneByAuth(restaurantId);
-        return menuService.findProductsAndPricesByMenuId(restaurant, menuId);
+        return menuService.findProductsAndPricesByMenuId(getOneByAuth(restaurantId), menuId);
     }
 
     @Override
     public ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductDto request) {
-        Restaurant restaurant = getOneByAuth(restaurantId);
-        return productService.addProduct(restaurant, menuId, request);
+        return productService.addProduct(getOneByAuth(restaurantId), menuId, request);
     }
 
 }

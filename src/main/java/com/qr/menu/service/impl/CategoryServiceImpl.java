@@ -23,11 +23,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public Category getOne(Long id) {
-        Optional<Category> categoryOpt = repository.findById(id);
-        if (!categoryOpt.isPresent()) {
-            throw new BusinessException(ErrorConstants.ERR101);
-        }
-        return categoryOpt.get();
+        return repository.findById(id).orElseThrow(() -> new BusinessException(ErrorConstants.ERR101));
     }
 
     @Override
@@ -36,8 +32,8 @@ public class CategoryServiceImpl implements ICategoryService {
         if (categoryOpt.isPresent()) {
             throw new BusinessException(ErrorConstants.ERR102);
         }
-        Category category = mapper.toCategory(request);
-        return mapper.toCategoryDto(repository.save(category));
+        Category newCategory = mapper.toCategory(request);
+        return mapper.toCategoryDto(repository.save(newCategory));
     }
 
     @Override
@@ -51,8 +47,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public CategoryDto findById(Long id) {
-        Category category = getOne(id);
-        return mapper.toCategoryDto(category);
+        return mapper.toCategoryDto(getOne(id));
     }
 
 }
