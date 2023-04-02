@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AddMenuDto {
+public class AddMenuRequestDto {
     private String name;
     private Boolean isActive;
 }

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class AddProductDto {
+public class AddProductRequestDto {
     private String name;
     private String description;
     private String imagePath;

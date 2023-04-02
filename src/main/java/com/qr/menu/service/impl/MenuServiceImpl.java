@@ -1,7 +1,7 @@
 package com.qr.menu.service.impl;
 
 import com.qr.menu.constant.ErrorConstants;
-import com.qr.menu.dto.AddMenuDto;
+import com.qr.menu.dto.AddMenuRequestDto;
 import com.qr.menu.dto.MenuDto;
 import com.qr.menu.dto.MenuProductDto;
 import com.qr.menu.entity.Menu;
@@ -33,7 +33,7 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     @Override
-    public MenuDto addMenu(Restaurant restaurant, AddMenuDto request) {
+    public MenuDto addMenu(Restaurant restaurant, AddMenuRequestDto request) {
         long menuCount = menuRepository.countMenusByRestaurantId(restaurant.getId());
         if (menuCount == 3) {
             throw new BusinessException(ErrorConstants.ERR106);

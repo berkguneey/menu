@@ -20,13 +20,18 @@ public class CustomCustomUserServiceImpl implements ICustomUserService, UserDeta
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        CustomUserDetails user = repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(ErrorConstants.ERR103.getMessage()));
+        CustomUserDetails user = findByUsername(username);
         return User.withUsername(user.getUsername()).password(user.getPassword()).roles(user.getRole().getName()).build();
     }
 
     @Override
     public RegisterDto register(RegisterDto request) {
         return null;
+    }
+
+    @Override
+    public CustomUserDetails findByUsername(String username) {
+        return repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(ErrorConstants.ERR103.getMessage()));
     }
 
 }

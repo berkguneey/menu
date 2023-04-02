@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class MenuProductCategoryBasedDto {
+public class ActiveMenuProductsResponseDto {
     private CategoryDto category;
     private List<MenuProductDto> menuProducts;
 }

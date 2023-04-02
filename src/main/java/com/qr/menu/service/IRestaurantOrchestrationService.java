@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface IRestaurantOrchestrationService {
 
-    List<MenuProductCategoryBasedDto> findActiveMenuProductsByRestaurantId(Long restaurantId);
+    List<ActiveMenuProductsResponseDto> findActiveMenuProductsByRestaurantId(Long restaurantId);
 
-    RestaurantDto addRestaurant(AddRestaurantDto request) throws IOException, WriterException;
+    RestaurantDto addRestaurant(AddRestaurantRequestDto request) throws IOException, WriterException;
 
     List<RestaurantDto> findAllRestaurants();
 
@@ -20,10 +20,10 @@ public interface IRestaurantOrchestrationService {
 
     List<MenuDto> findMenusByRestaurantId(Long restaurantId);
 
-    MenuDto addMenuToRestaurant(Long restaurantId, AddMenuDto request);
+    MenuDto addMenuToRestaurant(Long restaurantId, AddMenuRequestDto request);
 
     List<MenuProductDto> findMenuProductsByRestaurantIdAndMenuId(Long restaurantId, Long menuId);
 
-    ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductDto request);
+    ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductRequestDto request);
 
 }

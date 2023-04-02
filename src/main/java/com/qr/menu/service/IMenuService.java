@@ -1,6 +1,6 @@
 package com.qr.menu.service;
 
-import com.qr.menu.dto.AddMenuDto;
+import com.qr.menu.dto.AddMenuRequestDto;
 import com.qr.menu.dto.MenuDto;
 import com.qr.menu.dto.MenuProductDto;
 import com.qr.menu.entity.Menu;
@@ -12,7 +12,7 @@ public interface IMenuService {
 
     Menu getOne(Long id);
 
-    MenuDto addMenu(Restaurant restaurant, AddMenuDto request);
+    MenuDto addMenu(Restaurant restaurant, AddMenuRequestDto request);
 
     List<MenuDto> findAll();
 

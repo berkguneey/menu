@@ -1,6 +1,6 @@
 package com.qr.menu.service;
 
-import com.qr.menu.dto.AddCategoryDto;
+import com.qr.menu.dto.AddCategoryRequestDto;
 import com.qr.menu.dto.CategoryDto;
 import com.qr.menu.entity.Category;
 
@@ -10,7 +10,7 @@ public interface ICategoryService {
 
     Category getOne(Long id);
 
-    CategoryDto addCategory(AddCategoryDto request);
+    CategoryDto addCategory(AddCategoryRequestDto request);
 
     List<CategoryDto> findAll();
 

@@ -43,7 +43,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     }
 
     @Override
-    public List<MenuProductCategoryBasedDto> findActiveMenuProductsByRestaurantId(Long restaurantId) {
+    public List<ActiveMenuProductsResponseDto> findActiveMenuProductsByRestaurantId(Long restaurantId) {
         List<MenuProductDto> menuProducts = menuService.findActiveMenuByRestaurant(getOne(restaurantId));
 
         return menuProducts.stream()
@@ -52,7 +52,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
                         Collectors.mapping(mp -> mp, Collectors.toList())))
                 .entrySet().stream()
                 .map(entry -> {
-                    MenuProductCategoryBasedDto menuProductCategoryBased = new MenuProductCategoryBasedDto();
+                    ActiveMenuProductsResponseDto menuProductCategoryBased = new ActiveMenuProductsResponseDto();
                     menuProductCategoryBased.setCategory(entry.getKey());
                     menuProductCategoryBased.setMenuProducts(entry.getValue());
                     return menuProductCategoryBased;
@@ -62,7 +62,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
 
     @Override
     @Transactional
-    public RestaurantDto addRestaurant(AddRestaurantDto request) throws IOException, WriterException {
+    public RestaurantDto addRestaurant(AddRestaurantRequestDto request) throws IOException, WriterException {
         Optional<Restaurant> restaurantOpt = repository.findByNameAndEmailAndPhoneNumber(request.getName(), request.getEmail(), request.getPhoneNumber());
         if (restaurantOpt.isPresent()) {
             throw new BusinessException(ErrorConstants.ERR110);
@@ -105,7 +105,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     }
 
     @Override
-    public MenuDto addMenuToRestaurant(Long restaurantId, AddMenuDto request) {
+    public MenuDto addMenuToRestaurant(Long restaurantId, AddMenuRequestDto request) {
         return menuService.addMenu(getOneByAuth(restaurantId), request);
     }
 
@@ -115,7 +115,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     }
 
     @Override
-    public ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductDto request) {
+    public ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductRequestDto request) {
         return productService.addProduct(getOneByAuth(restaurantId), menuId, request);
     }
 

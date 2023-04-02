@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AddCategoryDto {
+public class AddCategoryRequestDto {
     private String name;
     private String imagePath;
 }

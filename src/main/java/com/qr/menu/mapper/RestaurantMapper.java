@@ -1,6 +1,6 @@
 package com.qr.menu.mapper;
 
-import com.qr.menu.dto.AddRestaurantDto;
+import com.qr.menu.dto.AddRestaurantRequestDto;
 import com.qr.menu.dto.RestaurantDto;
 import com.qr.menu.entity.Restaurant;
 import org.mapstruct.Mapper;
@@ -19,6 +19,6 @@ public interface RestaurantMapper {
     Restaurant toRestaurant(RestaurantDto restaurantDto);
 
     @Mapping(source = "userId", target = "user.id")
-    Restaurant toRestaurant(AddRestaurantDto addRestaurantDto);
+    Restaurant toRestaurant(AddRestaurantRequestDto addRestaurantRequestDto);
 
 }

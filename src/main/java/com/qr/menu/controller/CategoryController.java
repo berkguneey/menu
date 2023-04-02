@@ -1,6 +1,6 @@
 package com.qr.menu.controller;
 
-import com.qr.menu.dto.AddCategoryDto;
+import com.qr.menu.dto.AddCategoryRequestDto;
 import com.qr.menu.dto.CategoryDto;
 import com.qr.menu.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class CategoryController {
     private final ICategoryService service;
 
     @PostMapping("/owner/categories")
-    public ResponseEntity<CategoryDto> addCategory(@RequestBody AddCategoryDto request) {
+    public ResponseEntity<CategoryDto> addCategory(@RequestBody AddCategoryRequestDto request) {
         return ResponseEntity.ok(service.addCategory(request));
     }
 

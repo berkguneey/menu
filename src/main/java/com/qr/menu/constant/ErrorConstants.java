@@ -16,7 +16,9 @@ public enum ErrorConstants {
     ERR109(109L, "Restoran bulunamadı."),
     ERR110(110L, "Bu restoran zaten tanımlı."),
     ERR111(111L, "Menü bu restorana ait değil."),
-    ERR112(112L, "Restoranın aktif menüsü bulunamadı.");
+    ERR112(112L, "Restoranın aktif menüsü bulunamadı."),
+    ERR113(113L, "Refresh token geçerli değil."),
+    ERR114(114L, "Refresh token zaman aşımına uğradı. Lütfen tekrar giriş yapınız.");
 
     private Long code;
     private String message;

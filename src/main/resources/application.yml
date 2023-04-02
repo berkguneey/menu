@@ -3,7 +3,8 @@ server:
 
 app:
   jwtSecret: berk
-  jwtExpirationInMs: 5000000
+  jwtExpirationInMs: 86400000 # 1day
+  refreshExpirationInDays: 3
 
 logging:
   level:

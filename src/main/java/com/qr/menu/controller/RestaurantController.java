@@ -18,12 +18,12 @@ public class RestaurantController {
     private final IRestaurantOrchestrationService service;
 
     @GetMapping("/restaurants/{id}/active-menu/products")
-    public ResponseEntity<List<MenuProductCategoryBasedDto>> findActiveMenuProductsByRestaurantId(@PathVariable Long id) {
+    public ResponseEntity<List<ActiveMenuProductsResponseDto>> findActiveMenuProductsByRestaurantId(@PathVariable Long id) {
         return ResponseEntity.ok(service.findActiveMenuProductsByRestaurantId(id));
     }
 
     @PostMapping("/admin/restaurants")
-    public ResponseEntity<RestaurantDto> addRestaurant(@RequestBody AddRestaurantDto request) throws IOException, WriterException {
+    public ResponseEntity<RestaurantDto> addRestaurant(@RequestBody AddRestaurantRequestDto request) throws IOException, WriterException {
         return ResponseEntity.ok(service.addRestaurant(request));
     }
 
@@ -48,7 +48,7 @@ public class RestaurantController {
     }
 
     @PostMapping("/owner/restaurants/{restaurantId}/menus")
-    public ResponseEntity<MenuDto> addMenuToRestaurant(@PathVariable Long restaurantId, @RequestBody AddMenuDto request) {
+    public ResponseEntity<MenuDto> addMenuToRestaurant(@PathVariable Long restaurantId, @RequestBody AddMenuRequestDto request) {
         return ResponseEntity.ok(service.addMenuToRestaurant(restaurantId, request));
     }
 
@@ -58,7 +58,7 @@ public class RestaurantController {
     }
 
     @PostMapping("/owner/restaurants/{restaurantId}/menus/{menuId}/products")
-    public ResponseEntity<ProductDto> addProductToRestaurantAndMenu(@PathVariable Long restaurantId, @PathVariable Long menuId, @RequestBody AddProductDto request) {
+    public ResponseEntity<ProductDto> addProductToRestaurantAndMenu(@PathVariable Long restaurantId, @PathVariable Long menuId, @RequestBody AddProductRequestDto request) {
         return ResponseEntity.ok(service.addProductToRestaurantAndMenu(restaurantId, menuId, request));
     }
 
