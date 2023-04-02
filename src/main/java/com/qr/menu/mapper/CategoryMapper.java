@@ -1,7 +1,7 @@
 package com.qr.menu.mapper;
 
-import com.qr.menu.dto.AddCategoryRequestDto;
 import com.qr.menu.dto.CategoryDto;
+import com.qr.menu.dto.request.AddCategoryRequest;
 import com.qr.menu.entity.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
@@ -17,6 +17,6 @@ public interface CategoryMapper {
 
     Category toCategory(CategoryDto categoryDto);
 
-    Category toCategory(AddCategoryRequestDto addCategoryRequestDto);
+    Category toCategory(AddCategoryRequest addCategoryRequest);
 
 }

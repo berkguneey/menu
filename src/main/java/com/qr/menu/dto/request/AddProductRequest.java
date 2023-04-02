@@ -1,4 +1,4 @@
-package com.qr.menu.dto;
+package com.qr.menu.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class AddProductRequestDto {
+public class AddProductRequest {
     private String name;
     private String description;
     private String imagePath;

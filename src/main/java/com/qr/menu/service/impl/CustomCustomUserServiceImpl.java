@@ -1,7 +1,7 @@
 package com.qr.menu.service.impl;
 
 import com.qr.menu.constant.ErrorConstants;
-import com.qr.menu.dto.RegisterDto;
+import com.qr.menu.dto.request.RegisterRequest;
 import com.qr.menu.entity.CustomUserDetails;
 import com.qr.menu.repository.CustomUserRepository;
 import com.qr.menu.service.ICustomUserService;
@@ -25,7 +25,7 @@ public class CustomCustomUserServiceImpl implements ICustomUserService, UserDeta
     }
 
     @Override
-    public RegisterDto register(RegisterDto request) {
+    public RegisterRequest register(RegisterRequest request) {
         return null;
     }
 

@@ -1,4 +1,4 @@
-package com.qr.menu.dto;
+package com.qr.menu.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class AuthenticateUserResponseDto {
+public class AuthenticateUserResponse {
     private Long id;
     private String username;
     private String accessToken;

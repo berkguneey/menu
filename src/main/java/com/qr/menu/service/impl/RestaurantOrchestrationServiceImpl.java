@@ -2,7 +2,14 @@ package com.qr.menu.service.impl;
 
 import com.google.zxing.WriterException;
 import com.qr.menu.constant.ErrorConstants;
-import com.qr.menu.dto.*;
+import com.qr.menu.dto.MenuDto;
+import com.qr.menu.dto.MenuProductDto;
+import com.qr.menu.dto.ProductDto;
+import com.qr.menu.dto.RestaurantDto;
+import com.qr.menu.dto.request.AddMenuRequest;
+import com.qr.menu.dto.request.AddProductRequest;
+import com.qr.menu.dto.request.AddRestaurantRequest;
+import com.qr.menu.dto.response.ActiveMenuProductsResponse;
 import com.qr.menu.entity.Restaurant;
 import com.qr.menu.exception.BusinessException;
 import com.qr.menu.helper.QRCodeGeneratorHelper;
@@ -43,7 +50,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     }
 
     @Override
-    public List<ActiveMenuProductsResponseDto> findActiveMenuProductsByRestaurantId(Long restaurantId) {
+    public List<ActiveMenuProductsResponse> findActiveMenuProductsByRestaurantId(Long restaurantId) {
         List<MenuProductDto> menuProducts = menuService.findActiveMenuByRestaurant(getOne(restaurantId));
 
         return menuProducts.stream()
@@ -52,17 +59,17 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
                         Collectors.mapping(mp -> mp, Collectors.toList())))
                 .entrySet().stream()
                 .map(entry -> {
-                    ActiveMenuProductsResponseDto menuProductCategoryBased = new ActiveMenuProductsResponseDto();
-                    menuProductCategoryBased.setCategory(entry.getKey());
-                    menuProductCategoryBased.setMenuProducts(entry.getValue());
-                    return menuProductCategoryBased;
+                    ActiveMenuProductsResponse activeMenuProductsResponse = new ActiveMenuProductsResponse();
+                    activeMenuProductsResponse.setCategory(entry.getKey());
+                    activeMenuProductsResponse.setMenuProducts(entry.getValue());
+                    return activeMenuProductsResponse;
                 })
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public RestaurantDto addRestaurant(AddRestaurantRequestDto request) throws IOException, WriterException {
+    public RestaurantDto addRestaurant(AddRestaurantRequest request) throws IOException, WriterException {
         Optional<Restaurant> restaurantOpt = repository.findByNameAndEmailAndPhoneNumber(request.getName(), request.getEmail(), request.getPhoneNumber());
         if (restaurantOpt.isPresent()) {
             throw new BusinessException(ErrorConstants.ERR110);
@@ -105,7 +112,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     }
 
     @Override
-    public MenuDto addMenuToRestaurant(Long restaurantId, AddMenuRequestDto request) {
+    public MenuDto addMenuToRestaurant(Long restaurantId, AddMenuRequest request) {
         return menuService.addMenu(getOneByAuth(restaurantId), request);
     }
 
@@ -115,7 +122,7 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
     }
 
     @Override
-    public ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductRequestDto request) {
+    public ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductRequest request) {
         return productService.addProduct(getOneByAuth(restaurantId), menuId, request);
     }
 

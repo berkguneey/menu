@@ -1,4 +1,4 @@
-package com.qr.menu.dto;
+package com.qr.menu.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ExceptionResponseDto {
+public class ExceptionResponse {
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
@@ -21,13 +21,13 @@ public class ExceptionResponseDto {
     private Long code;
     private String message;
 
-    public ExceptionResponseDto(Exception ex, HttpStatus httpStatus) {
+    public ExceptionResponse(Exception ex, HttpStatus httpStatus) {
         this.timestamp = LocalDateTime.now();
         this.httpStatus = httpStatus;
         this.message = ex.getMessage();
     }
 
-    public ExceptionResponseDto(BusinessException ex) {
+    public ExceptionResponse(BusinessException ex) {
         this.timestamp = LocalDateTime.now();
         this.httpStatus = ex.getHttpStatus();
         this.code = ex.getErrorCode();

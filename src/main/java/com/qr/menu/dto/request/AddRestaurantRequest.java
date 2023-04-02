@@ -1,11 +1,11 @@
-package com.qr.menu.dto;
+package com.qr.menu.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class AddRestaurantRequestDto {
+public class AddRestaurantRequest {
     private String name;
     private String description;
     private String city;

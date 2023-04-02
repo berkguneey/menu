@@ -1,7 +1,7 @@
 package com.qr.menu.mapper;
 
-import com.qr.menu.dto.AddProductRequestDto;
 import com.qr.menu.dto.ProductDto;
+import com.qr.menu.dto.request.AddProductRequest;
 import com.qr.menu.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
@@ -17,6 +17,6 @@ public interface ProductMapper {
 
     Product toProduct(ProductDto productDto);
 
-    Product toProduct(AddProductRequestDto addProductRequestDto);
+    Product toProduct(AddProductRequest addProductRequest);
 
 }

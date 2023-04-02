@@ -1,16 +1,23 @@
 package com.qr.menu.service;
 
 import com.google.zxing.WriterException;
-import com.qr.menu.dto.*;
+import com.qr.menu.dto.MenuDto;
+import com.qr.menu.dto.MenuProductDto;
+import com.qr.menu.dto.ProductDto;
+import com.qr.menu.dto.RestaurantDto;
+import com.qr.menu.dto.request.AddMenuRequest;
+import com.qr.menu.dto.request.AddProductRequest;
+import com.qr.menu.dto.request.AddRestaurantRequest;
+import com.qr.menu.dto.response.ActiveMenuProductsResponse;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface IRestaurantOrchestrationService {
 
-    List<ActiveMenuProductsResponseDto> findActiveMenuProductsByRestaurantId(Long restaurantId);
+    List<ActiveMenuProductsResponse> findActiveMenuProductsByRestaurantId(Long restaurantId);
 
-    RestaurantDto addRestaurant(AddRestaurantRequestDto request) throws IOException, WriterException;
+    RestaurantDto addRestaurant(AddRestaurantRequest request) throws IOException, WriterException;
 
     List<RestaurantDto> findAllRestaurants();
 
@@ -20,10 +27,10 @@ public interface IRestaurantOrchestrationService {
 
     List<MenuDto> findMenusByRestaurantId(Long restaurantId);
 
-    MenuDto addMenuToRestaurant(Long restaurantId, AddMenuRequestDto request);
+    MenuDto addMenuToRestaurant(Long restaurantId, AddMenuRequest request);
 
     List<MenuProductDto> findMenuProductsByRestaurantIdAndMenuId(Long restaurantId, Long menuId);
 
-    ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductRequestDto request);
+    ProductDto addProductToRestaurantAndMenu(Long restaurantId, Long menuId, AddProductRequest request);
 
 }

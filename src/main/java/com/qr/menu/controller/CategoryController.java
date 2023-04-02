@@ -1,7 +1,7 @@
 package com.qr.menu.controller;
 
-import com.qr.menu.dto.AddCategoryRequestDto;
 import com.qr.menu.dto.CategoryDto;
+import com.qr.menu.dto.request.AddCategoryRequest;
 import com.qr.menu.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class CategoryController {
     private final ICategoryService service;
 
     @PostMapping("/owner/categories")
-    public ResponseEntity<CategoryDto> addCategory(@RequestBody AddCategoryRequestDto request) {
+    public ResponseEntity<CategoryDto> addCategory(@RequestBody AddCategoryRequest request) {
         return ResponseEntity.ok(service.addCategory(request));
     }
 

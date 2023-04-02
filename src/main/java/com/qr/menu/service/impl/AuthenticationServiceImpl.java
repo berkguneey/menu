@@ -1,9 +1,9 @@
 package com.qr.menu.service.impl;
 
-import com.qr.menu.dto.AuthenticateUserRequestDto;
-import com.qr.menu.dto.AuthenticateUserResponseDto;
-import com.qr.menu.dto.LogoutRequest;
-import com.qr.menu.dto.RefreshTokenRequest;
+import com.qr.menu.dto.request.AuthenticateUserRequest;
+import com.qr.menu.dto.request.LogoutRequest;
+import com.qr.menu.dto.request.RefreshTokenRequest;
+import com.qr.menu.dto.response.AuthenticateUserResponse;
 import com.qr.menu.entity.CustomUserDetails;
 import com.qr.menu.entity.RefreshToken;
 import com.qr.menu.helper.JwtTokenProvider;
@@ -27,22 +27,22 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     private final ICustomUserService customUserService;
 
     @Override
-    public AuthenticateUserResponseDto authenticateUser(AuthenticateUserRequestDto request) {
+    public AuthenticateUserResponse authenticateUser(AuthenticateUserRequest request) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         CustomUserDetails user = customUserService.findByUsername(authentication.getName());
         String accessToken = jwtTokenProvider.generateToken(user);
         String refreshToken = refreshTokenService.generateRefreshToken(user);
-        return new AuthenticateUserResponseDto(user.getId(), user.getUsername(), accessToken, "Bearer ", refreshToken);
+        return new AuthenticateUserResponse(user.getId(), user.getUsername(), accessToken, "Bearer ", refreshToken);
     }
 
     @Override
-    public AuthenticateUserResponseDto refreshToken(RefreshTokenRequest request) {
+    public AuthenticateUserResponse refreshToken(RefreshTokenRequest request) {
         RefreshToken refreshToken = refreshTokenService.findByToken(request.getRefreshToken());
         refreshTokenService.validateRefreshToken(refreshToken);
         CustomUserDetails user = refreshToken.getUser();
         String accessToken = jwtTokenProvider.generateToken(user);
-        return new AuthenticateUserResponseDto(user.getId(), user.getUsername(), accessToken, "Bearer ", request.getRefreshToken());
+        return new AuthenticateUserResponse(user.getId(), user.getUsername(), accessToken, "Bearer ", request.getRefreshToken());
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.qr.menu.service.impl;
 
 import com.qr.menu.constant.ErrorConstants;
-import com.qr.menu.dto.AddProductRequestDto;
 import com.qr.menu.dto.ProductDto;
+import com.qr.menu.dto.request.AddProductRequest;
 import com.qr.menu.entity.MenuProduct;
 import com.qr.menu.entity.Product;
 import com.qr.menu.entity.Restaurant;
@@ -34,7 +34,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ProductDto addProduct(Restaurant restaurant, Long menuId, AddProductRequestDto request) {
+    public ProductDto addProduct(Restaurant restaurant, Long menuId, AddProductRequest request) {
         Optional<Product> productOpt = productRepository.findByNameAndRestaurantIdAndMenuId(request.getName(), restaurant.getId(), menuId);
         if (productOpt.isPresent()) {
             throw new BusinessException(ErrorConstants.ERR108);

@@ -1,11 +1,10 @@
-package com.qr.menu.dto;
+package com.qr.menu.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class LogoutRequest {
-    private String accessToken;
+public class RefreshTokenRequest {
     private String refreshToken;
 }
