@@ -55,11 +55,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public List<ProductDto> findAll() {
-        List<Product> products = productRepository.findAll();
-        if (products.isEmpty()) {
-            throw new BusinessException(ErrorConstants.ERR107);
-        }
-        return mapper.toProductDtos(products);
+        return mapper.toProductDtos(productRepository.findAll());
     }
 
     @Override

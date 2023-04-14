@@ -38,11 +38,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public List<CategoryDto> findAll() {
-        List<Category> categories = repository.findAll();
-        if (categories.isEmpty()) {
-            throw new BusinessException(ErrorConstants.ERR101);
-        }
-        return mapper.toCategoryDtos(categories);
+        return mapper.toCategoryDtos(repository.findAll());
     }
 
     @Override

@@ -49,11 +49,7 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public List<MenuDto> findAll() {
-        List<Menu> menus = menuRepository.findAll();
-        if (menus.isEmpty()) {
-            throw new BusinessException(ErrorConstants.ERR104);
-        }
-        return menuMapper.toMenuDtos(menus);
+        return menuMapper.toMenuDtos(menuRepository.findAll());
     }
 
     @Override

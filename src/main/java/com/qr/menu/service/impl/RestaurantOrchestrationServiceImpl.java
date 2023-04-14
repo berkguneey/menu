@@ -84,21 +84,13 @@ public class RestaurantOrchestrationServiceImpl implements IRestaurantOrchestrat
 
     @Override
     public List<RestaurantDto> findAllRestaurants() {
-        List<Restaurant> restaurants = repository.findAll();
-        if (restaurants.isEmpty()) {
-            throw new BusinessException(ErrorConstants.ERR109);
-        }
-        return mapper.toRestaurantDtos(restaurants);
+        return mapper.toRestaurantDtos(repository.findAll());
     }
 
     @Override
     public List<RestaurantDto> findRestaurants() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<Restaurant> restaurants = repository.findAllByUsername(auth.getName());
-        if (restaurants.isEmpty()) {
-            throw new BusinessException(ErrorConstants.ERR109);
-        }
-        return mapper.toRestaurantDtos(restaurants);
+        return mapper.toRestaurantDtos(repository.findAllByUsername(auth.getName()));
     }
 
     @Override
